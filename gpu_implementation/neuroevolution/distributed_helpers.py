@@ -5,6 +5,7 @@ from multiprocessing.pool import ApplyResult
 
 import tabular_logger as tlogger
 
+
 class AsyncWorker(object):
     @property
     def concurrent_tasks(self):

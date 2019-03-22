@@ -84,6 +84,7 @@ def compute_centered_ranks(x):
     y -= .5
     return y
 
+
 def make_session(single_threaded):
     import tensorflow as tf
     if not single_threaded:
@@ -102,6 +103,7 @@ def itergroups(items, group_size):
     if group:
         yield tuple(group)
 
+
 def get_ref_batch(env, batch_size=32):
     ref_batch = []
     ob = env.reset()
@@ -111,6 +113,7 @@ def get_ref_batch(env, batch_size=32):
         if done:
             ob = env.reset()
     return ref_batch
+
 
 def batched_weighted_sum(weights, vecs, batch_size):
     total = 0.
@@ -160,7 +163,6 @@ def run_master(master_redis_cfg, log_dir, exp):
     if policy.needs_ref_batch:
         ref_batch = get_ref_batch(env, batch_size=128)
         policy.set_ref_batch(ref_batch)
-
 
     if 'init_from' in exp['policy']:
         logger.info('Initializing weights from {}'.format(exp['policy']['init_from']))

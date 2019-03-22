@@ -26,6 +26,7 @@ def cli():
         level=logging.INFO,
         stream=sys.stderr)
 
+
 def import_algo(name):
     if name == 'es':
         from . import es as algo
@@ -38,6 +39,7 @@ def import_algo(name):
     else:
         raise NotImplementedError()
     return algo
+
 
 @cli.command()
 @click.option('--algo')

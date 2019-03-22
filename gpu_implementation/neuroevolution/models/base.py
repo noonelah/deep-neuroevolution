@@ -23,6 +23,7 @@ import math
 import tabular_logger as tlogger
 from gym_tensorflow.ops import indexed_matmul
 
+
 class BaseModel(object):
     def __init__(self):
         self.nonlin = tf.nn.relu

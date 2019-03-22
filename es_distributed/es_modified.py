@@ -84,6 +84,7 @@ def compute_centered_ranks(x):
     y -= .5
     return y
 
+
 def make_session(single_threaded):
     import tensorflow as tf
     if not single_threaded:
@@ -102,6 +103,7 @@ def itergroups(items, group_size):
     if group:
         yield tuple(group)
 
+
 def get_ref_batch(env, batch_size=32):
     ref_batch = []
     ob = env.reset()
@@ -111,6 +113,7 @@ def get_ref_batch(env, batch_size=32):
         if done:
             ob = env.reset()
     return ref_batch
+
 
 def batched_weighted_sum(weights, vecs, batch_size):
     total = 0.
@@ -136,6 +139,7 @@ def setup(exp, single_threaded):
     policy = getattr(policies, exp['policy']['type'])(env.observation_space, env.action_space, **exp['policy']['args'])
     tf_util.initialize()
     return config, env, sess, policy
+
 
 def master_extract_parent(eval_bc_vecs, eval_rets, iteration, policy, ref_batch):
     import csv
@@ -176,6 +180,7 @@ def master_extract_parent(eval_bc_vecs, eval_rets, iteration, policy, ref_batch)
         row = np.hstack((bc_vec[-1], fitness, length, seed, noise_stdev))
         writer.writerow(row)
 
+
 def master_extract_cloud(curr_task_results, iteration):
     import csv
     import os
@@ -197,6 +202,7 @@ def master_extract_cloud(curr_task_results, iteration):
                 sign = point[5]
                 row = np.hstack((bc_vec[-1], fitness, length, noise_idx, policy_seed, sign))
                 writer.writerow(row)
+
 
 def run_master(master_redis_cfg, log_dir, exp):
     logger.info('run_master: {}'.format(locals()))
@@ -414,7 +420,6 @@ def run_master(master_redis_cfg, log_dir, exp):
             tlogger.log('Saved snapshot {}'.format(filename))
 
 
-
 def rollout_and_update_ob_stat(policy, env, timestep_limit, rs, task_ob_stat, calc_obstat_prob, *, policy_seed=None):
     if policy.needs_ob_stat and calc_obstat_prob != 0 and rs.rand() < calc_obstat_prob:
         rollout_rews, rollout_len, obs, rollout_nov = policy.rollout(
@@ -435,7 +440,6 @@ def run_worker(master_redis_cfg, relay_redis_cfg, noise, *, min_task_runtime=.2)
     worker_id = rs.randint(2 ** 31)
 
     assert policy.needs_ob_stat == (config.calc_obstat_prob != 0)
-
 
     while True:
         task_id, task_data = worker.get_current_task()

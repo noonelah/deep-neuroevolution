@@ -16,6 +16,7 @@ TASK_CHANNEL = 'es:task_channel'
 RESULTS_KEY = 'es:results'
 ARCHIVE_KEY = 'es:archive'
 
+
 def serialize(x):
     return pickle.dumps(x, protocol=-1)
 

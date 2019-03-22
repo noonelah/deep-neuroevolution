@@ -26,6 +26,7 @@ from queue import Queue
 from multiprocessing.pool import ApplyResult
 from .distributed_helpers import AsyncWorker, WorkerHub, AsyncTaskHub
 
+
 class RLEvalutionWorker(AsyncWorker):
     def __init__(self, make_env_f, model, batch_size, device='/cpu:0', ref_batch=None):
         self.batch_size = batch_size
@@ -147,7 +148,6 @@ class ConcurrentWorkers(object):
             self.hub = None
             self.steps_counter = tf.constant(0)
             self.async_hub = AsyncTaskHub(input_queue, done_queue)
-
 
     def eval_async(self, theta, extras, max_frames=None, callback=None, error_callback=None):
         return self.async_hub.run_async((theta, extras, max_frames), callback=callback, error_callback=error_callback)

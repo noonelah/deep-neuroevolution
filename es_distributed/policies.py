@@ -248,13 +248,11 @@ class MujocoPolicy(Policy):
         if ob_stat is not None:
             ob_stat.set_from_init(init_mean, init_std, init_count=1e5)
 
-
     def _get_pos(self, model):
         mass = model.body_mass
         xpos = model.data.xipos
         center = (np.sum(mass * xpos, 0) / np.sum(mass))
         return center[0], center[1], center[2]
-
 
     def rollout(self, env, *, render=False, timestep_limit=None, save_obs=False, random_stream=None, policy_seed=None, bc_choice=None):
         """
@@ -313,7 +311,7 @@ class ESAtariPolicy(Policy):
             is_ref_ph = tf.placeholder(tf.bool, shape=[])
 
             a = self._make_net(o, is_ref_ph)
-            self._act = U.function([o, is_ref_ph] , a)
+            self._act = U.function([o, is_ref_ph], a)
         return scope
 
     def _make_net(self, o, is_ref):

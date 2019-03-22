@@ -98,9 +98,11 @@ class Offspring(object):
     def training_steps(self):
         return np.sum(self.ep_len)
 
+
 class OffspringCached(object):
     def __init__(self, seeds):
         self.seeds = seeds
+
 
 def main(**exp):
     log_dir = tlogger.log_dir()
@@ -118,7 +120,6 @@ def main(**exp):
 
         cached_parents = []
         results = []
-
 
         def make_offspring():
             if len(cached_parents) == 0:
@@ -270,6 +271,7 @@ def main(**exp):
                 cached_parents.extend(new_parents)
                 tlogger.info("Done caching parents")
     return float(state.curr_solution_test), {'val': float(state.curr_solution_val)}
+
 
 if __name__ == "__main__":
     with open(sys.argv[-1], 'r') as f:

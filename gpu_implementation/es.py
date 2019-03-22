@@ -81,6 +81,7 @@ class TrainingState(object):
     def sample(self, schedule):
         return schedule.value(iteration=self.it, timesteps_so_far=self.timesteps_so_far)
 
+
 class Offspring(object):
     def __init__(self, seeds, rewards, ep_len, validation_rewards=[], validation_ep_len=[]):
         self.seeds = seeds
@@ -109,6 +110,7 @@ def itergroups(items, group_size):
     if group:
         yield tuple(group)
 
+
 def compute_ranks(x):
     """
     Returns ranks in [0, len(x))
@@ -135,6 +137,7 @@ def batched_weighted_sum(weights, vecs, batch_size):
         total += np.dot(np.asarray(batch_weights, dtype=np.float32), np.asarray(batch_vecs, dtype=np.float32))
         num_items_summed += len(batch_weights)
     return total, num_items_summed
+
 
 def main(**exp):
     log_dir = tlogger.log_dir()
@@ -286,6 +289,7 @@ def main(**exp):
                 tlogger.info('Training terminated after {} timesteps'.format(state.timesteps_so_far))
                 break
             results.clear()
+
 
 if __name__ == "__main__":
     with open(sys.argv[-1], 'r') as f:

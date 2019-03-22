@@ -165,6 +165,7 @@ def dense(x, size, name, weight_init=None, bias=True, std=1.0):
 # Basic Stuff
 # ================================================================
 
+
 def function(inputs, outputs, updates=None, givens=None):
     if isinstance(outputs, list):
         return _Function(inputs, outputs, updates, givens=givens)
@@ -175,6 +176,7 @@ def function(inputs, outputs, updates=None, givens=None):
         f = _Function(inputs, [outputs], updates, givens=givens)
         return lambda *inputs : f(*inputs)[0]
 
+
 class _Function(object):
     def __init__(self, inputs, outputs, updates, givens, check_nan=False):
         assert all(len(i.op.inputs)==0 for i in inputs), "inputs should all be placeholders"
@@ -184,6 +186,7 @@ class _Function(object):
         self.outputs_update = list(outputs) + [self.update_group]
         self.givens = {} if givens is None else givens
         self.check_nan = check_nan
+
     def __call__(self, *inputvals):
         assert len(inputvals) == len(self.inputs)
         feed_dict = dict(zip(self.inputs, inputvals))
@@ -221,27 +224,31 @@ def flatgrad(loss, var_list):
     return tf.concat(0, [tf.reshape(grad, [numel(v)])
         for (v, grad) in zip(var_list, grads)])
 
+
 class SetFromFlat(object):
     def __init__(self, var_list, dtype=tf.float32):
         assigns = []
         shapes = list(map(var_shape, var_list))
         total_size = np.sum([intprod(shape) for shape in shapes])
 
-        self.theta = theta = tf.placeholder(dtype,[total_size])
-        start=0
+        self.theta = theta = tf.placeholder(dtype, [total_size])
+        start = 0
         assigns = []
-        for (shape,v) in zip(shapes,var_list):
+        for (shape, v) in zip(shapes, var_list):
             size = intprod(shape)
-            assigns.append(tf.assign(v, tf.reshape(theta[start:start+size],shape)))
-            start+=size
+            assigns.append(tf.assign(v, tf.reshape(theta[start:start+size], shape)))
+            start += size
         assert start == total_size
         self.op = tf.group(*assigns)
+
     def __call__(self, theta):
-        get_session().run(self.op, feed_dict={self.theta:theta})
+        get_session().run(self.op, feed_dict={self.theta: theta})
+
 
 class GetFlat(object):
     def __init__(self, var_list):
         self.op = tf.concat(0, [tf.reshape(v, [numel(v)]) for v in var_list])
+
     def __call__(self):
         return get_session().run(self.op)
 

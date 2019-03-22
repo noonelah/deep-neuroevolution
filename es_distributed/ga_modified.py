@@ -19,6 +19,7 @@ def setup(exp, single_threaded):
     tf_util.initialize()
     return config, env, sess, policy
 
+
 def master_extract_parent_ga(point, noise_stdev, iteration, policy):
     import csv
     import os
@@ -42,6 +43,7 @@ def master_extract_parent_ga(point, noise_stdev, iteration, policy):
         row = np.hstack((bc_vec, fitness, length, noise_idx, policy_seed, noise_stdev))
         writer.writerow(row)
 
+
 def master_extract_cloud_ga(curr_task_results, iteration):
     import csv
     import os
@@ -62,6 +64,7 @@ def master_extract_cloud_ga(curr_task_results, iteration):
                 policy_seed = point[4]
                 row = np.hstack((bc_vec, fitness, length, noise_idx, policy_seed))
                 writer.writerow(row)
+
 
 def run_master(master_redis_cfg, log_dir, exp):
     logger.info('run_master: {}'.format(locals()))
